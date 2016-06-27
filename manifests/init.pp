@@ -116,15 +116,15 @@ class hbm (
 
   if $manage_package_real {
     package { 'package_hbm':
-      name   => 'hbm',
       ensure => installed,
+      name   => 'hbm',
     }
   }
 
   if $manage_service_real {
     service { 'service_hbm':
-      name   => 'hbm',
       ensure => $service_ensure,
+      name   => 'hbm',
       enable => $service_enable_real,
     }
   }
