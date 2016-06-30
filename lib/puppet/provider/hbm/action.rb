@@ -52,7 +52,7 @@ Puppet::Type.type(:hbm).provide(:action) do
     'commit',
     'events',
     'volume_list',
-    'volume_create'
+    'volume_create',
     'volume_inspect',
     'volume_remove',
     'network_list',
