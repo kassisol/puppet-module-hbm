@@ -12,7 +12,7 @@ Puppet::Type.type(:hbm).provide(:config) do
     'image_create_official',
   ]
 
-  commands :hbm => '/usr/bin/hbm'
+  commands :hbm => '/usr/sbin/hbm'
 
   def exists?
     findkey(resource[:provider], resource[:name])

@@ -3,7 +3,7 @@ Puppet::Type.type(:hbm).provide(:volume) do
 
   has_feature :recurse
 
-  commands :hbm => '/usr/bin/hbm'
+  commands :hbm => '/usr/sbin/hbm'
 
   def exists?
     findkey(resource[:provider], resource[:name], resource[:recurse])
