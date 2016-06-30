@@ -21,8 +21,8 @@ Puppet::Type.type(:hbm).provide(:action) do
     'container_rename',
     'container_pause',
     'container_unpause',
-    'container_attach_ws',
     'container_attach',
+    'container_attach_ws',
     'container_wait',
     'container_remove',
     'container_copy',
@@ -45,12 +45,22 @@ Puppet::Type.type(:hbm).provide(:action) do
     'image_save_image',
     'image_save_images',
     'image_load',
-    'login',
+    'auth',
     'info',
     'version',
     'ping',
     'commit',
     'events',
+    'volume_list',
+    'volume_create'
+    'volume_inspect',
+    'volume_remove',
+    'network_list',
+    'network_inspect',
+    'network_create',
+    'network_connect',
+    'network_disconnect',
+    'network_remove',
   ]
 
   commands :hbm => '/usr/bin/hbm'
