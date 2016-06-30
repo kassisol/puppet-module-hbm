@@ -1,7 +1,7 @@
 
 Puppet::Type.type(:hbm).provide(:device) do
 
-  commands :hbm => '/usr/bin/hbm'
+  commands :hbm => '/usr/sbin/hbm'
 
   def exists?
     findkey(resource[:provider], resource[:name])
