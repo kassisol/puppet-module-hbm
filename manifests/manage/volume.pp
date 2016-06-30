@@ -16,8 +16,8 @@ define hbm::manage::volume (
   validate_bool($recurse_real)
 
   hbm { $name:
-    provider => 'volume',
     ensure   => $ensure,
+    provider => 'volume',
     recurse  => $recurse_real,
   }
 }

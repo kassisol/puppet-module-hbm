@@ -8,7 +8,7 @@ define hbm::manage::device (
     "hbm::manage::device::${name}::ensure is invalid and does not match the regex.")
 
   hbm { $name:
-    provider => 'device',
     ensure   => $ensure,
+    provider => 'device',
   }
 }

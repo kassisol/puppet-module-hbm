@@ -8,7 +8,7 @@ define hbm::manage::config (
     "hbm::manage::config::${name}::ensure is invalid and does not match the regex.")
 
   hbm { $name:
+    ensure   => $ensure,
     provider => 'config',
-    ensure  => $ensure,
   }
 }

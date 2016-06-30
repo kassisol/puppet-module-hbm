@@ -8,7 +8,7 @@ define hbm::manage::image (
     "hbm::manage::image::${name}::ensure is invalid and does not match the regex.")
 
   hbm { $name:
-    provider => 'image',
     ensure   => $ensure,
+    provider => 'image',
   }
 }

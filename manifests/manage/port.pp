@@ -8,7 +8,7 @@ define hbm::manage::port (
     "hbm::manage::port::${name}::ensure is invalid and does not match the regex.")
 
   hbm { $name:
-    provider => 'port',
     ensure   => $ensure,
+    provider => 'port',
   }
 }

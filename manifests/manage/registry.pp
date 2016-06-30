@@ -8,7 +8,7 @@ define hbm::manage::registry (
     "hbm::manage::registry::${name}::ensure is invalid and does not match the regex.")
 
   hbm { $name:
-    provider => 'registry',
     ensure   => $ensure,
+    provider => 'registry',
   }
 }

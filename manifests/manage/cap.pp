@@ -8,7 +8,7 @@ define hbm::manage::cap (
     "hbm::manage::cap::${name}::ensure is invalid and does not match the regex.")
 
   hbm { $name:
+    ensure   => $ensure,
     provider => 'cap',
-    ensure  => $ensure,
   }
 }

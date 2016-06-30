@@ -8,7 +8,7 @@ define hbm::manage::action (
     "hbm::manage::action::${name}::ensure is invalid and does not match the regex.")
 
   hbm { $name:
-    provider => 'action',
     ensure   => $ensure,
+    provider => 'action',
   }
 }

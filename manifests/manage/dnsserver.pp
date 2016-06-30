@@ -8,7 +8,7 @@ define hbm::manage::dnsserver (
     "hbm::manage::dnsserver::${name}::ensure is invalid and does not match the regex.")
 
   hbm { $name:
-    provider => 'dns',
     ensure   => $ensure,
+    provider => 'dns',
   }
 }
