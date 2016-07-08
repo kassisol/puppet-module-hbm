@@ -29,7 +29,7 @@ Puppet::Type.type(:hbm).provide(:config) do
     false
   end
 
-  def add
+  def create
     unless CONFIG_LIST.include?(@resource[:name])
       @resource.fail 'Must specify a valid config'
     end
@@ -37,7 +37,7 @@ Puppet::Type.type(:hbm).provide(:config) do
     execute([command(:hbm), 'config', 'add', @resource[:name]])
   end
 
-  def remove
+  def destroy
     execute([command(:hbm), 'config', 'rm', @resource[:name]])
   end
 end
