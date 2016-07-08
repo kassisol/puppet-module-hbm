@@ -218,4 +218,8 @@ class hbm (
     validate_hash($volumes_real)
     create_resources('hbm::manage::volume', $volumes_real)
   }
+
+  if $manage_package_real and $manage_service_real {
+    Package['package_hbm'] -> Service['service_hbm']
+  }
 }
