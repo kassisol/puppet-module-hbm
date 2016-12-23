@@ -3,29 +3,31 @@
 # Module to manage HBM
 #
 class hbm (
-  $manage_package         = false,
-  $manage_service         = true,
-  $service_enable         = true,
-  $service_ensure         = 'running',
-  $actions                = undef,
-  $caps                   = undef,
-  $configs                = undef,
-  $devices                = undef,
-  $dnsservers             = undef,
-  $images                 = undef,
-  $ports                  = undef,
-  $registries             = undef,
-  $volumes                = undef,
-  $actions_hiera_merge    = false,
-  $caps_hiera_merge       = false,
-  $configs_hiera_merge    = false,
-  $devices_hiera_merge    = false,
-  $dnsservers_hiera_merge = false,
-  $images_hiera_merge     = false,
-  $ports_hiera_merge      = false,
-  $registries_hiera_merge = false,
-  $volumes_hiera_merge    = false,
+  $manage_package          = false,
+  $manage_service          = true,
+  $service_enable          = true,
+  $service_ensure          = 'running',
+  $clusters                = undef,
+  $collections             = undef,
+  $groups                  = undef,
+  $hosts                   = undef,
+  $policies                = undef,
+  $resources               = undef,
+  $users                   = undef,
+  $clusters_hiera_merge    = false,
+  $collections_hiera_merge = false,
+  $groups_hiera_merge      = false,
+  $hosts_hiera_merge       = false,
+  $policies_hiera_merge    = false,
+  $resources_hiera_merge   = false,
+  $users_hiera_merge       = false,
 ) {
+
+  $dockerversion = '1.12.0'
+
+  if versioncmp($::docker_version, $dockerversion) < 0 {
+      fail("HBM requires Docker Engine version >=${dockerversion}. Your version is ${::docker_version}.")
+  }
 
   if is_string($manage_package) {
     $manage_package_real = str2bool($manage_package)
@@ -51,68 +53,54 @@ class hbm (
   validate_re($service_ensure, [ '^running$', '^stopped$' ],
     'hbm::service_ensure is invalid and does not match the regex.')
 
-  if is_string($actions_hiera_merge) {
-    $actions_hiera_merge_real = str2bool($actions_hiera_merge)
+  if is_string($clusters_hiera_merge) {
+    $clusters_hiera_merge_real = str2bool($clusters_hiera_merge)
   } else {
-    $actions_hiera_merge_real = $actions_hiera_merge
+    $clusters_hiera_merge_real = $clusters_hiera_merge
   }
-  validate_bool($actions_hiera_merge_real)
+  validate_bool($clusters_hiera_merge_real)
 
-  if is_string($caps_hiera_merge) {
-    $caps_hiera_merge_real = str2bool($caps_hiera_merge)
+  if is_string($collections_hiera_merge) {
+    $collections_hiera_merge_real = str2bool($collections_hiera_merge)
   } else {
-    $caps_hiera_merge_real = $caps_hiera_merge
+    $collections_hiera_merge_real = $collections_hiera_merge
   }
-  validate_bool($caps_hiera_merge_real)
+  validate_bool($collections_hiera_merge_real)
 
-  if is_string($configs_hiera_merge) {
-    $configs_hiera_merge_real = str2bool($configs_hiera_merge)
+  if is_string($groups_hiera_merge) {
+    $groups_hiera_merge_real = str2bool($groups_hiera_merge)
   } else {
-    $configs_hiera_merge_real = $configs_hiera_merge
+    $groups_hiera_merge_real = $groups_hiera_merge
   }
-  validate_bool($configs_hiera_merge_real)
+  validate_bool($groups_hiera_merge_real)
 
-  if is_string($devices_hiera_merge) {
-    $devices_hiera_merge_real = str2bool($devices_hiera_merge)
+  if is_string($hosts_hiera_merge) {
+    $hosts_hiera_merge_real = str2bool($hosts_hiera_merge)
   } else {
-    $devices_hiera_merge_real = $devices_hiera_merge
+    $hosts_hiera_merge_real = $hosts_hiera_merge
   }
-  validate_bool($devices_hiera_merge_real)
+  validate_bool($hosts_hiera_merge_real)
 
-  if is_string($dnsservers_hiera_merge) {
-    $dnsservers_hiera_merge_real = str2bool($dnsservers_hiera_merge)
+  if is_string($policies_hiera_merge) {
+    $policies_hiera_merge_real = str2bool($policies_hiera_merge)
   } else {
-    $dnsservers_hiera_merge_real = $dnsservers_hiera_merge
+    $policies_hiera_merge_real = $policies_hiera_merge
   }
-  validate_bool($dnsservers_hiera_merge_real)
+  validate_bool($policies_hiera_merge_real)
 
-  if is_string($images_hiera_merge) {
-    $images_hiera_merge_real = str2bool($images_hiera_merge)
+  if is_string($resources_hiera_merge) {
+    $resources_hiera_merge_real = str2bool($resources_hiera_merge)
   } else {
-    $images_hiera_merge_real = $images_hiera_merge
+    $resources_hiera_merge_real = $resources_hiera_merge
   }
-  validate_bool($images_hiera_merge_real)
+  validate_bool($resources_hiera_merge_real)
 
-  if is_string($ports_hiera_merge) {
-    $ports_hiera_merge_real = str2bool($ports_hiera_merge)
+  if is_string($users_hiera_merge) {
+    $users_hiera_merge_real = str2bool($users_hiera_merge)
   } else {
-    $ports_hiera_merge_real = $ports_hiera_merge
+    $users_hiera_merge_real = $users_hiera_merge
   }
-  validate_bool($ports_hiera_merge_real)
-
-  if is_string($registries_hiera_merge) {
-    $registries_hiera_merge_real = str2bool($registries_hiera_merge)
-  } else {
-    $registries_hiera_merge_real = $registries_hiera_merge
-  }
-  validate_bool($registries_hiera_merge_real)
-
-  if is_string($volumes_hiera_merge) {
-    $volumes_hiera_merge_real = str2bool($volumes_hiera_merge)
-  } else {
-    $volumes_hiera_merge_real = $volumes_hiera_merge
-  }
-  validate_bool($volumes_hiera_merge_real)
+  validate_bool($users_hiera_merge_real)
 
   if $manage_package_real {
     package { 'package_hbm':
@@ -129,94 +117,74 @@ class hbm (
     }
   }
 
-  if $actions != undef {
-    if $actions_hiera_merge_real == true {
-      $actions_real = hiera_hash('hbm::actions')
+  if $clusters != undef {
+    if $clusters_hiera_merge_real == true {
+      $clusters_real = hiera_hash('hbm::clusters')
     } else {
-      $actions_real = $actions
+      $clusters_real = $clusters
     }
-    validate_hash($actions_real)
-    create_resources('hbm::manage::action', $actions_real)
+    validate_hash($clusters_real)
+    create_resources('hbm::manage::cluster', $clusters_real)
   }
 
-  if $caps != undef {
-    if $caps_hiera_merge_real == true {
-      $caps_real = hiera_hash('hbm::caps')
+  if $collections != undef {
+    if $collections_hiera_merge_real == true {
+      $collections_real = hiera_hash('hbm::collections')
     } else {
-      $caps_real = $caps
+      $collections_real = $collections
     }
-    validate_hash($caps_real)
-    create_resources('hbm::manage::cap', $caps_real)
+    validate_hash($collections_real)
+    create_resources('hbm::manage::collection', $collections_real)
   }
 
-  if $configs != undef {
-    if $configs_hiera_merge_real == true {
-      $configs_real = hiera_hash('hbm::configs')
+  if $groups != undef {
+    if $groups_hiera_merge_real == true {
+      $groups_real = hiera_hash('hbm::groups')
     } else {
-      $configs_real = $configs
+      $groups_real = $groups
     }
-    validate_hash($configs_real)
-    create_resources('hbm::manage::config', $configs_real)
+    validate_hash($groups_real)
+    create_resources('hbm::manage::group', $groups_real)
   }
 
-  if $devices != undef {
-    if $devices_hiera_merge_real == true {
-      $devices_real = hiera_hash('hbm::devices')
+  if $hosts != undef {
+    if $hosts_hiera_merge_real == true {
+      $hosts_real = hiera_hash('hbm::hosts')
     } else {
-      $devices_real = $devices
+      $hosts_real = $hosts
     }
-    validate_hash($devices_real)
-    create_resources('hbm::manage::device', $devices_real)
+    validate_hash($hosts_real)
+    create_resources('hbm::manage::host', $hosts_real)
   }
 
-  if $dnsservers != undef {
-    if $dnsservers_hiera_merge_real == true {
-      $dnsservers_real = hiera_hash('hbm::dnsservers')
+  if $policies != undef {
+    if $policies_hiera_merge_real == true {
+      $policies_real = hiera_hash('hbm::policies')
     } else {
-      $dnsservers_real = $dnsservers
+      $policies_real = $policies
     }
-    validate_hash($dnsservers_real)
-    create_resources('hbm::manage::dnsserver', $dnsservers_real)
+    validate_hash($policies_real)
+    create_resources('hbm::manage::policy', $policies_real)
   }
 
-  if $images != undef {
-    if $images_hiera_merge_real == true {
-      $images_real = hiera_hash('hbm::images')
+  if $resources != undef {
+    if $resources_hiera_merge_real == true {
+      $resources_real = hiera_hash('hbm::resources')
     } else {
-      $images_real = $images
+      $resources_real = $resources
     }
-    validate_hash($images_real)
-    create_resources('hbm::manage::image', $images_real)
+    validate_hash($resources_real)
+    create_resources('hbm::manage::resource', $resources_real)
   }
 
-  if $ports != undef {
-    if $ports_hiera_merge_real == true {
-      $ports_real = hiera_hash('hbm::ports')
+  if $users != undef {
+    if $users_hiera_merge_real == true {
+      $users_real = hiera_hash('hbm::users')
     } else {
-      $ports_real = $ports
+      $users_real = $users
     }
-    validate_hash($ports_real)
-    create_resources('hbm::manage::port', $ports_real)
-  }
-
-  if $registries != undef {
-    if $registries_hiera_merge_real == true {
-      $registries_real = hiera_hash('hbm::registries')
-    } else {
-      $registries_real = $registries
-    }
-    validate_hash($registries_real)
-    create_resources('hbm::manage::registry', $registries_real)
-  }
-
-  if $volumes != undef {
-    if $volumes_hiera_merge_real == true {
-      $volumes_real = hiera_hash('hbm::volumes')
-    } else {
-      $volumes_real = $volumes
-    }
-    validate_hash($volumes_real)
-    create_resources('hbm::manage::volume', $volumes_real)
+    validate_hash($users_real)
+    create_resources('hbm::manage::user', $users_real)
   }
 
   if $manage_package_real and $manage_service_real {

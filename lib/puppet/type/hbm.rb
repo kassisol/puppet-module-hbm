@@ -2,23 +2,60 @@ require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:hbm) do
   @doc = %q{Set actions to allow command to be run by Docker.
-    Example:
-        hbm { 'container_create':
-          ensure   => 'present',
-          provider => 'action',
-        }
-        hbm { 'container_create_user_root':
-          ensure   => 'absent',
-          provider => 'config',
-        }
-        hbm { '/tmp/example':
-          ensure   => 'present',
-          provider => 'volume',
-          recurse  => true,
-        }
-    }
 
-  feature :recurse, "The provider accepts subdirectories for volume."
+    Example:
+      hbm { 'cluster1':
+        ensure   => 'present',
+        provider => 'cluster',
+      }
+      hbm { 'cluster2':
+        ensure   => 'absent',
+        provider => 'cluster',
+      }
+      hbm { 'host1':
+        ensure   => 'present'
+        provider => 'host',
+        members  => ['cluster1'],
+      }
+      hbm { 'collection1':
+        ensure   => 'present',
+        provider => 'collection',
+      }
+      hbm { 'resource1':
+        ensure   => 'present',
+        provider => 'resource',
+        type     => 'volume',
+        value    => '/tmp/test',
+        options  => ['recursive'],
+        members  => ['collection1'],
+      }
+      hbm { 'group1':
+        ensure   => 'present',
+        provider => 'group',
+      }
+      hbm { 'user1':
+        ensure   => 'present',
+        provider => 'user',
+        members  => ['group1'],
+      }
+      hbm { 'policy1':
+        ensure     => present,
+        provider   => 'policy',
+        cluster    => 'cluster1',
+        collection => 'collection1',
+        group      => 'group1',
+      }
+  }
+
+  feature :members, "The provider accepts members parameter for host, resource and user."
+
+  feature :type, "The provider accepts type parameter for resource."
+  feature :value, "The provider accepts value parameter for resource."
+  feature :options, "The provider accepts options parameter for resource."
+
+  feature :cluster, "The provider accepts cluster parameter for policy."
+  feature :collection, "The provider accepts collections parameter for policy."
+  feature :group, "The provider accepts group parameter for policy."
 
   ensurable
 
@@ -39,10 +76,59 @@ Puppet::Type.newtype(:hbm) do
     [ [ /(.*)/m, [ [:name] ] ] ]
   end
 
-  newparam(:recurse, :boolean => true,
-          :required_features => :recurse,
-          :parent => Puppet::Parameter::Boolean) do
-    desc "Allows Volume subdirectory"
-    defaultto false
+  newparam(:members) do
+    desc "Members."
+
+    validate do |value|
+      if !value.is_a?(Array)
+        if value.is_a?(String)
+          unless value =~ /^[a-z]{1}[a-z0-9]+$/
+            raise ArgumentError, "Members value #{value} is not valid"
+          end
+        else
+          raise ArgumentError, "Members must be an Array not #{value.class}"
+        end
+      end
+    end
+  end
+
+  newparam(:type) do
+    desc "Resource's type."
+
+    newvalues(:action, :cap, :config, :device, :dns, :image, :logdriver, :logopt, :port, :registry, :volume)
+  end
+
+  newparam(:value) do
+    desc "Resource's value."
+  end
+
+  newparam(:options) do
+    desc "Resource's options."
+
+    valids = ['recursive=true', 'recursive=false', 'nosuid=true', 'nosuid=false']
+
+    validate do |value|
+      if !value.is_a?(Array)
+        if value.is_a?(String)
+          unless valids.include?(value)
+            raise ArgumentError, "Options #{value} is not valid"
+          end
+        else
+          raise ArgumentError, "Options must be an Array not #{value.class}"
+        end
+      end
+    end
+  end
+
+  newparam(:cluster) do
+    desc "Cluster's name."
+  end
+
+  newparam(:collection) do
+    desc "Collection's name."
+  end
+
+  newparam(:group) do
+    desc "Group's name."
   end
 end

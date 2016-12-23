@@ -12,6 +12,9 @@ This module is built for use with Puppet v3 on the platforms bellow and supports
 
 ## Class `hbm` ##
 
+# Parameters
+------------
+
 manage_package
 --------------
 Allows for boolean, 'true', or 'false'
@@ -35,101 +38,79 @@ service_ensure
 
 - *Default*: 'running''
 
-actions
--------
+clusters
+--------
 
 - *Default*: 'undef'
 
-caps
-----
+collections
+-----------
 
 - *Default*: 'undef'
 
-configs
--------
-
-- *Default*: 'undef'
-
-devices
--------
-
-- *Default*: 'undef'
-
-dnsservers
-----------
-
-- *Default*: 'undef'
-
-images
+groups
 ------
 
 - *Default*: 'undef'
 
-ports
+hosts
 -----
 
 - *Default*: 'undef'
 
-registries
-----------
+policies
+--------
 
 - *Default*: 'undef'
 
-volumes
--------
+resources
+---------
 
 - *Default*: 'undef'
 
-actions_hiera_merge
--------------------
+users
+-----
+
+- *Default*: 'undef'
+
+clusters_hiera_merge
+--------------------
 Allows for boolean, 'true', or 'false'
 
 - *Default*: 'false'
 
-caps_hiera_merge
-----------------
+collections_hiera_merge
+-----------------------
 Allows for boolean, 'true', or 'false'
 
 - *Default*: 'false'
 
-configs_hiera_merge
--------------------
-Allows for boolean, 'true', or 'false'
-
-- *Default*: 'false'
-
-devices_hiera_merge
--------------------
-Allows for boolean, 'true', or 'false'
-
-- *Default*: 'false'
-
-dnsservers_hiera_merge
-----------------------
-Allows for boolean, 'true', or 'false'
-
-- *Default*: 'false'
-
-images_hiera_merge
+groups_hiera_merge
 ------------------
 Allows for boolean, 'true', or 'false'
 
 - *Default*: 'false'
 
-ports_hiera_merge
+hosts_hiera_merge
 -----------------
 Allows for boolean, 'true', or 'false'
 
 - *Default*: 'false'
 
-registries_hiera_merge
-----------------------
+policies_hiera_merge
+--------------------
 Allows for boolean, 'true', or 'false'
 
 - *Default*: 'false'
 
-volumes_hiera_merge
--------------------
+resources_hiera_merge
+---------------------
+Allows for boolean, 'true', or 'false'
+
+- *Default*: 'false'
+
+users_hiera_merge
+-----------------
 Allows for boolean, 'true', or 'false'
 
 - *Default*: 'false'

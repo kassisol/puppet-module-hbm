@@ -1,7 +1,12 @@
+require 'puppet/provider/hbm'
 
-Puppet::Type.type(:hbm).provide(:action) do
+Puppet::Type.type(:hbm).provide(:resource) do
+  include Puppet::Provider::Hbm
 
-  defaultfor :osfamily => :redhat
+  has_feature :type
+  has_feature :value
+  has_feature :options
+  has_feature :members
 
   ACTION_LIST = [
     'container_list',
@@ -61,34 +66,58 @@ Puppet::Type.type(:hbm).provide(:action) do
     'network_connect',
     'network_disconnect',
     'network_remove',
+    'node_list',
+    'node_inspect',
+    'node_remove',
+    'node_update',
+    'swarm_info',
+    'swarm_init',
+    'swarm_join',
+    'swarm_leave',
+    'swarm_update',
+    'service_list',
+    'service_create',
+    'service_remove',
+    'service_inspect',
+    'service_update',
+    'task_list',
+    'task_inspect',
+  ]
+
+  CONFIG_LIST = [
+    'container_create_privileged',
+    'container_create_ipc_host',
+    'container_create_net_host',
+    'container_create_pid_host',
+    'container_create_userns_host',
+    'container_create_uts_host',
+    'container_create_user_root',
+    'image_create_official',
   ]
 
   commands :hbm => '/usr/sbin/hbm'
 
   def exists?
-    findkey(resource[:provider], resource[:name])
-  end
-
-  def findkey(bucket, key)
-    result = `#{command(:hbm)} #{bucket} ls`.split("\n")
-
-    result.each do | a |
-      if a == key
-        return true
-      end
-    end
-    false
+    res_exists()
   end
 
   def create
-    unless ACTION_LIST.include?(@resource[:name])
-      @resource.fail 'Must specify a valid action'
+    if resource[:type] == 'action'
+      unless ACTION_LIST.include?(resource[:value])
+        resource.fail 'Must specify a valid action'
+      end
     end
 
-    execute([command(:hbm), 'action', 'add', @resource[:name]])
+    if resource[:type] == 'config'
+      unless CONFIG_LIST.include?(resource[:value])
+        resource.fail 'Must specify a valid config'
+      end
+    end
+
+    res_create()
   end
 
   def destroy
-    execute([command(:hbm), 'action', 'rm', @resource[:name]])
+    res_destroy()
   end
 end
