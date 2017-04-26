@@ -48,6 +48,11 @@ collections
 
 - *Default*: 'undef'
 
+configs
+-----------
+
+- *Default*: 'undef'
+
 groups
 ------
 
@@ -80,6 +85,12 @@ Allows for boolean, 'true', or 'false'
 - *Default*: 'false'
 
 collections_hiera_merge
+-----------------------
+Allows for boolean, 'true', or 'false'
+
+- *Default*: 'false'
+
+configs_hiera_merge
 -----------------------
 Allows for boolean, 'true', or 'false'
 

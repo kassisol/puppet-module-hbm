@@ -9,6 +9,7 @@ class hbm (
   $service_ensure          = 'running',
   $clusters                = undef,
   $collections             = undef,
+  $configs                 = undef,
   $groups                  = undef,
   $hosts                   = undef,
   $policies                = undef,
@@ -16,6 +17,7 @@ class hbm (
   $users                   = undef,
   $clusters_hiera_merge    = false,
   $collections_hiera_merge = false,
+  $configs_hiera_merge     = false,
   $groups_hiera_merge      = false,
   $hosts_hiera_merge       = false,
   $policies_hiera_merge    = false,
@@ -66,6 +68,13 @@ class hbm (
     $collections_hiera_merge_real = $collections_hiera_merge
   }
   validate_bool($collections_hiera_merge_real)
+
+  if is_string($configs_hiera_merge) {
+    $configs_hiera_merge_real = str2bool($configs_hiera_merge)
+  } else {
+    $configs_hiera_merge_real = $configs_hiera_merge
+  }
+  validate_bool($configs_hiera_merge_real)
 
   if is_string($groups_hiera_merge) {
     $groups_hiera_merge_real = str2bool($groups_hiera_merge)
@@ -135,6 +144,16 @@ class hbm (
     }
     validate_hash($collections_real)
     create_resources('hbm::manage::collection', $collections_real)
+  }
+
+  if $configs != undef {
+    if $configs_hiera_merge_real == true {
+      $configs_real = hiera_hash('hbm::configs')
+    } else {
+      $configs_real = $configs
+    }
+    validate_hash($configs_real)
+    create_resources('hbm::manage::config', $configs_real)
   }
 
   if $groups != undef {
