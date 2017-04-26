@@ -113,16 +113,18 @@ module Puppet::Provider::Hbm
       execute(c)
     end
 
-    members = getmembers(resource[:provider], resource[:name], resource[:members])
+    unless resource[:provider].to_s == 'config'
+      members = getmembers(resource[:provider], resource[:name], resource[:members])
 
-    if members['add'].size > 0
-      members['add'].each do |member|
-        execute([command(:hbm), resource[:provider], 'member', '--add', member, resource[:name]])
+      if members['add'].size > 0
+        members['add'].each do |member|
+          execute([command(:hbm), resource[:provider], 'member', '--add', member, resource[:name]])
+        end
       end
-    end
-    if members['remove'].size > 0
-      members['remove'].each do |member|
-        execute([command(:hbm), resource[:provider], 'member', '--remove', member, resource[:name]])
+      if members['remove'].size > 0
+        members['remove'].each do |member|
+          execute([command(:hbm), resource[:provider], 'member', '--remove', member, resource[:name]])
+        end
       end
     end
   end
