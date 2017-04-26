@@ -4,19 +4,6 @@ Puppet::Type.newtype(:hbm) do
   @doc = %q{Set actions to allow command to be run by Docker.
 
     Example:
-      hbm { 'cluster1':
-        ensure   => 'present',
-        provider => 'cluster',
-      }
-      hbm { 'cluster2':
-        ensure   => 'absent',
-        provider => 'cluster',
-      }
-      hbm { 'host1':
-        ensure   => 'present'
-        provider => 'host',
-        members  => ['cluster1'],
-      }
       hbm { 'collection1':
         ensure   => 'present',
         provider => 'collection',
@@ -41,7 +28,6 @@ Puppet::Type.newtype(:hbm) do
       hbm { 'policy1':
         ensure     => present,
         provider   => 'policy',
-        cluster    => 'cluster1',
         collection => 'collection1',
         group      => 'group1',
       }
@@ -53,7 +39,6 @@ Puppet::Type.newtype(:hbm) do
   feature :value, "The provider accepts value parameter for resource."
   feature :options, "The provider accepts options parameter for resource."
 
-  feature :cluster, "The provider accepts cluster parameter for policy."
   feature :collection, "The provider accepts collections parameter for policy."
   feature :group, "The provider accepts group parameter for policy."
 
@@ -118,10 +103,6 @@ Puppet::Type.newtype(:hbm) do
         end
       end
     end
-  end
-
-  newparam(:cluster) do
-    desc "Cluster's name."
   end
 
   newparam(:collection) do

@@ -3,7 +3,6 @@ require 'puppet/provider/hbm'
 Puppet::Type.type(:hbm).provide(:policy) do
   include Puppet::Provider::Hbm
 
-  has_feature :cluster
   has_feature :collection
   has_feature :group
 
@@ -14,10 +13,6 @@ Puppet::Type.type(:hbm).provide(:policy) do
   end
 
   def create
-    unless findkey('cluster', resource[:cluster])
-      @resource.fail 'Must specify a valid cluster name'
-    end
-
     unless findkey('collection', resource[:collection])
       @resource.fail 'Must specify a valid collection name'
     end
@@ -26,7 +21,7 @@ Puppet::Type.type(:hbm).provide(:policy) do
       @resource.fail 'Must specify a valid group name'
     end
 
-    execute([command(:hbm), 'policy', 'add', '--cluster', resource[:cluster], '--collection', resource[:collection], '--group', resource[:group], resource[:name]])
+    execute([command(:hbm), 'policy', 'add', '--collection', resource[:collection], '--group', resource[:group], resource[:name]])
   end
 
   def destroy

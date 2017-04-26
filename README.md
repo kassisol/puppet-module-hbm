@@ -38,11 +38,6 @@ service_ensure
 
 - *Default*: 'running''
 
-clusters
---------
-
-- *Default*: 'undef'
-
 collections
 -----------
 
@@ -55,11 +50,6 @@ configs
 
 groups
 ------
-
-- *Default*: 'undef'
-
-hosts
------
 
 - *Default*: 'undef'
 
@@ -78,12 +68,6 @@ users
 
 - *Default*: 'undef'
 
-clusters_hiera_merge
---------------------
-Allows for boolean, 'true', or 'false'
-
-- *Default*: 'false'
-
 collections_hiera_merge
 -----------------------
 Allows for boolean, 'true', or 'false'
@@ -98,12 +82,6 @@ Allows for boolean, 'true', or 'false'
 
 groups_hiera_merge
 ------------------
-Allows for boolean, 'true', or 'false'
-
-- *Default*: 'false'
-
-hosts_hiera_merge
------------------
 Allows for boolean, 'true', or 'false'
 
 - *Default*: 'false'

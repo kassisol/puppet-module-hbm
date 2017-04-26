@@ -7,19 +7,15 @@ class hbm (
   $manage_service          = true,
   $service_enable          = true,
   $service_ensure          = 'running',
-  $clusters                = undef,
   $collections             = undef,
   $configs                 = undef,
   $groups                  = undef,
-  $hosts                   = undef,
   $policies                = undef,
   $resources               = undef,
   $users                   = undef,
-  $clusters_hiera_merge    = false,
   $collections_hiera_merge = false,
   $configs_hiera_merge     = false,
   $groups_hiera_merge      = false,
-  $hosts_hiera_merge       = false,
   $policies_hiera_merge    = false,
   $resources_hiera_merge   = false,
   $users_hiera_merge       = false,
@@ -55,13 +51,6 @@ class hbm (
   validate_re($service_ensure, [ '^running$', '^stopped$' ],
     'hbm::service_ensure is invalid and does not match the regex.')
 
-  if is_string($clusters_hiera_merge) {
-    $clusters_hiera_merge_real = str2bool($clusters_hiera_merge)
-  } else {
-    $clusters_hiera_merge_real = $clusters_hiera_merge
-  }
-  validate_bool($clusters_hiera_merge_real)
-
   if is_string($collections_hiera_merge) {
     $collections_hiera_merge_real = str2bool($collections_hiera_merge)
   } else {
@@ -82,13 +71,6 @@ class hbm (
     $groups_hiera_merge_real = $groups_hiera_merge
   }
   validate_bool($groups_hiera_merge_real)
-
-  if is_string($hosts_hiera_merge) {
-    $hosts_hiera_merge_real = str2bool($hosts_hiera_merge)
-  } else {
-    $hosts_hiera_merge_real = $hosts_hiera_merge
-  }
-  validate_bool($hosts_hiera_merge_real)
 
   if is_string($policies_hiera_merge) {
     $policies_hiera_merge_real = str2bool($policies_hiera_merge)
@@ -126,16 +108,6 @@ class hbm (
     }
   }
 
-  if $clusters != undef {
-    if $clusters_hiera_merge_real == true {
-      $clusters_real = hiera_hash('hbm::clusters')
-    } else {
-      $clusters_real = $clusters
-    }
-    validate_hash($clusters_real)
-    create_resources('hbm::manage::cluster', $clusters_real)
-  }
-
   if $collections != undef {
     if $collections_hiera_merge_real == true {
       $collections_real = hiera_hash('hbm::collections')
@@ -164,16 +136,6 @@ class hbm (
     }
     validate_hash($groups_real)
     create_resources('hbm::manage::group', $groups_real)
-  }
-
-  if $hosts != undef {
-    if $hosts_hiera_merge_real == true {
-      $hosts_real = hiera_hash('hbm::hosts')
-    } else {
-      $hosts_real = $hosts
-    }
-    validate_hash($hosts_real)
-    create_resources('hbm::manage::host', $hosts_real)
   }
 
   if $policies != undef {
