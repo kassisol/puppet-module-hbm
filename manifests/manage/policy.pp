@@ -2,8 +2,8 @@
 #
 define hbm::manage::policy (
   $ensure     = 'present',
-  $collection = 'MANDATORY',
-  $group      = 'MANDATORY',
+  $collection = undef,
+  $group      = undef,
 ) {
 
   validate_re($ensure, [ '^present$', '^absent$' ],
