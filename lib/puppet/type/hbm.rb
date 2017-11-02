@@ -67,7 +67,7 @@ Puppet::Type.newtype(:hbm) do
     validate do |value|
       if !value.is_a?(Array)
         if value.is_a?(String)
-          unless value =~ /^[a-z]{1}[a-z0-9]+$/
+          unless value =~ /^[a-z]{1}[a-zA-Z0-9\-\_]+$/
             raise ArgumentError, "Members value #{value} is not valid"
           end
         else
