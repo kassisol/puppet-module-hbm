@@ -8,7 +8,7 @@ Facter.add('hbm_version') do
     version = 'none'
 
     if File.file?(hbm_bin)
-      version = `#{hbm_bin} version | awk '{ print $2 }' 2> /dev/null`.strip
+      version = `#{hbm_bin} version | grep -E "^HBM|^Version" | awk '{ print $2 }' 2> /dev/null`.strip
     end
 
     version
