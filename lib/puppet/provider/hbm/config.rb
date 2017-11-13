@@ -3,8 +3,6 @@ require 'puppet/provider/hbm'
 Puppet::Type.type(:hbm).provide(:config) do
   include Puppet::Provider::Hbm
 
-  defaultfor :osfamily => :redhat
-
   commands :hbm => '/usr/sbin/hbm'
 
   def exists?
