@@ -6,14 +6,14 @@ Puppet::Type.type(:hbm).provide(:config) do
   commands :hbm => '/usr/sbin/hbm'
 
   def exists?
-    res_exists()
+    conf_exists()
   end
 
   def create
-    res_create()
+    execute([command(:hbm), 'config', 'set', @resource[:name], 'true'])
   end
 
   def destroy
-    res_destroy()
+    execute([command(:hbm), 'config', 'set', @resource[:name], 'false'])
   end
 end

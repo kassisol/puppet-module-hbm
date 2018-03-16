@@ -67,6 +67,16 @@ module Puppet::Provider::Hbm
     return result
   end
 
+  def conf_exists
+    result = `#{command(:hbm)} config get #{resource[:name]}`.strip
+
+    if result == 'true'
+      return true
+    end
+
+    return false
+  end
+
   def res_exists
     result = findkey(resource[:provider], resource[:name])
 
