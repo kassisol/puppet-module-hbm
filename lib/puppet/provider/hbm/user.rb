@@ -3,7 +3,7 @@ require 'puppet/provider/hbm'
 Puppet::Type.type(:hbm).provide(:user) do
   include Puppet::Provider::Hbm
 
-  defaultfor :osfamily => :redhat
+  defaultfor :kernel => :Linux
 
   has_feature :members
 
