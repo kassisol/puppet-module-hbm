@@ -80,7 +80,7 @@ Puppet::Type.newtype(:hbm) do
   newparam(:type) do
     desc "Resource's type."
 
-    newvalues(:action, :cap, :config, :device, :dns, :image, :logdriver, :logopt, :port, :registry, :volume)
+    newvalues(:action, :capability, :config, :device, :dns, :image, :logdriver, :logopt, :port, :registry, :volume)
   end
 
   newparam(:value) do
